@@ -1,0 +1,19 @@
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/restaurant_db
+    username: restaurant
+    password: restaurant123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
+    com.caio.restaurant: INFO
+    org.hibernate.SQL: WARN

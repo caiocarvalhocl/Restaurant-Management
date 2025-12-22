@@ -1,0 +1,68 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: restaurant-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: restaurant_db
+      POSTGRES_USER: restaurant
+      POSTGRES_PASSWORD: restaurant123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - restaurant-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restaurant -d restaurant_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin - Database GUI
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: restaurant-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@restaurant.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - restaurant-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Spring Boot API (uncomment when ready to containerize)
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: restaurant-api
+  #   restart: unless-stopped
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/restaurant_db
+  #     SPRING_DATASOURCE_USERNAME: restaurant
+  #     SPRING_DATASOURCE_PASSWORD: restaurant123
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - restaurant-network
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+networks:
+  restaurant-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:
