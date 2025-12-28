@@ -11,6 +11,6 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (name, description, price, price_type, category_id) VALUES
-('Product A', 'Description for Product A', 19.99, 'retail', 1),
-('Product B', 'Description for Product B', 29.99, 'wholesale', 2),
-('Product C', 'Description for Product C', 9.99, 'retail', 1);
+('Product A', 'Description for Product A', 19.99, 'FIXED', 1),
+('Product B', 'Description for Product B', 29.99, 'PER_UNIT', 2),
+('Product C', 'Description for Product C', 9.99, 'FIXED', 1);

@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.caio.restaurant.entity.Product;
 import com.caio.restaurant.service.ProductService;
+import com.caio.restaurant.dto.response.ProductResponse;
+import com.caio.restaurant.dto.request.ProductRequest;
 
 import jakarta.validation.Valid;
 
@@ -26,22 +27,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAllProducts() {
+    public List<ProductResponse> findAllProducts() {
         return productService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Product findProductById(@PathVariable Long id) {
+    public ProductResponse findProductById(@PathVariable Long id) {
         return productService.findById(id);
     }
 
     @PostMapping
-    public Product createProduct(@Valid @RequestBody Product product) {
+    public ProductResponse createProduct(@Valid @RequestBody ProductRequest product) {
         return productService.create(product);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product productDetails) {
+    public ProductResponse updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest productDetails) {
         return productService.update(id, productDetails);
     }
 

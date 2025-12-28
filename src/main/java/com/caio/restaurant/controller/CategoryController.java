@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
-import com.caio.restaurant.entity.Category;
+import com.caio.restaurant.dto.request.CategoryRequest;
+import com.caio.restaurant.dto.response.CategoryResponse;
 import com.caio.restaurant.service.CategoryService;
 
 @RestController
@@ -25,18 +26,18 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id) {
+    public CategoryResponse getCategoryById(@PathVariable Long id) {
         return categoryService.findById(id);
     }
 
     @PostMapping
-    public Category createCategory(@Valid @RequestBody Category category) {
-        return categoryService.create(category);
+    public CategoryResponse createCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
+        return categoryService.create(categoryRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -45,8 +46,8 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable Long id, @Valid @RequestBody Category categoryDetails) {
-        return categoryService.update(id, categoryDetails);
+    public CategoryResponse updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryRequest categoryRequest) {
+        return categoryService.update(id, categoryRequest);
     }
 
 }

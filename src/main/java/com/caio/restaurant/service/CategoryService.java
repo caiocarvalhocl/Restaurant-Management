@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.caio.restaurant.dto.request.CategoryRequest;
+import com.caio.restaurant.dto.response.CategoryResponse;
 import com.caio.restaurant.entity.Category;
 import com.caio.restaurant.exception.ResourceNotFoundException;
 import com.caio.restaurant.repository.CategoryRepository;
@@ -18,31 +20,33 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> findAll() {
+        return categoryRepository.findAll().stream().map(CategoryResponse::toResponse).toList();
     }
 
-    public Category findById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+    public CategoryResponse findById(Long id) {
+        return CategoryResponse.toResponse(categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!")));
     }
 
-    public Category create(Category category) {
-        return categoryRepository.save(category);
+    public CategoryResponse create(CategoryRequest categoryRequest) {
+        Category category = CategoryResponse.toEntity(categoryRequest);
+        return CategoryResponse.toResponse(categoryRepository.save(category));
+    }
+
+    public CategoryResponse update(Long id, CategoryRequest categoryDetails) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+
+        category.setName(categoryDetails.name());
+        category.setDescription(categoryDetails.description());
+
+        return CategoryResponse.toResponse(categoryRepository.save(category));
     }
 
     public void delete(Long id) {
-        Category category = this.findById(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
         categoryRepository.delete(category);
-    }
-
-    public Category update(Long id, Category categoryDetails) {
-        Category category = this.findById(id);
-
-        System.out.println(category);
-        category.setName(categoryDetails.getName());
-        category.setDescription(categoryDetails.getDescription());
-        System.out.println(category);
-
-        return categoryRepository.save(category);
     }
 }
