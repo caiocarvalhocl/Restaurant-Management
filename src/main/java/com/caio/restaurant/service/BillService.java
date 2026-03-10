@@ -56,12 +56,6 @@ public class BillService {
                 return BillResponse.toResponse(findBillById(id));
         }
 
-        public BillResponse testFindById(Long id) {
-                System.out.println("Test: " + id);
-                return BillResponse.toResponse(
-                                billRepository.findById(id)
-                                                .orElseThrow(() -> new ResourceNotFoundException("Not found: " + id)));
-        }
         // === OPEN BILL ===
 
         @Transactional
@@ -93,17 +87,11 @@ public class BillService {
 
         @Transactional
         public BillResponse addItem(Long billId, AddBillItemRequest request, User currentUser) {
-                System.out.println("=== addItem called ===");
-                System.out.println("billId: " + billId);
-                System.out.println("All bills: " + billRepository.findAll().size());
                 Bill bill = findBillById(billId);
 
                 if (bill.getStatus() != BillStatus.OPEN) {
                         throw new RuntimeException("Cannot add items to a closed bill");
                 }
-
-                System.out.println("Adding item to bill ID: " + billId + " - Product ID: " + request.productId()
-                                + ", Quantity: " + request.quantity());
 
                 Product product = productRepository.findById(request.productId())
                                 .orElseThrow(() -> new ResourceNotFoundException(

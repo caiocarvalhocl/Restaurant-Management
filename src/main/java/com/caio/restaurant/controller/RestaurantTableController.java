@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,7 @@ import com.caio.restaurant.dto.request.RestaurantTableRequest;
 import com.caio.restaurant.dto.response.RestaurantTableResponse;
 import com.caio.restaurant.service.RestaurantTableService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tables")
@@ -39,11 +40,11 @@ public class RestaurantTableController {
 
     @PostMapping
     @PreAuthorize("hasRole('OWNER')")
-    public RestaurantTableResponse createTable(@RequestBody RestaurantTableRequest request) {
+    public RestaurantTableResponse createTable(@Valid @RequestBody RestaurantTableRequest request) {
         return restaurantTableService.create(request);
     }
 
-    @DeleteMapping("/:id")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('OWNER')")
     public void deleteTable(@PathVariable Long id) {
         restaurantTableService.delete(id);
