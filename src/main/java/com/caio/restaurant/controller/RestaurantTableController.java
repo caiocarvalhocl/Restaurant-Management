@@ -31,7 +31,7 @@ public class RestaurantTableController {
         return restaurantTableService.findAll();
     }
 
-    @GetMapping("/:id")
+    @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public RestaurantTableResponse getTableById(@PathVariable Long id) {
         return restaurantTableService.findById(id);
