@@ -14,6 +14,7 @@ CREATE TABLE users (
 CREATE INDEX idx_users_email ON users(email);
 
 -- Insert default admin user (password: admin123)
--- BCrypt hash for 'admin123'
+-- BCrypt hash for 'admin123', generated with Spring Security's BCryptPasswordEncoder (strength 10).
+-- To regenerate: new BCryptPasswordEncoder().encode("admin123")
 INSERT INTO users (name, email, password, role, active)
-VALUES ('Admin', 'admin@restaurant.com', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MqrqQb9i9mYGVcvCh.L9Xj9u.L9Xj9u', 'OWNER', true);
+VALUES ('Admin', 'admin@restaurant.com', '$2a$10$Rgkfz3mTt4TTKv8iCt4cou0ALKIaeDwbCSVIY8KPqFImg0mhc0JgC', 'OWNER', true);
