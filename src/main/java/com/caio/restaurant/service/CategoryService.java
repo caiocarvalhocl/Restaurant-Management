@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.caio.restaurant.dto.request.CategoryRequest;
@@ -22,6 +24,10 @@ public class CategoryService {
 
     public List<CategoryResponse> findAll() {
         return categoryRepository.findAll().stream().map(CategoryResponse::toResponse).toList();
+    }
+
+    public Page<CategoryResponse> findAllPaged(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(CategoryResponse::toResponse);
     }
 
     public CategoryResponse findById(Long id) {

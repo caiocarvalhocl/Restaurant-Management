@@ -1,6 +1,8 @@
 package com.caio.restaurant.service;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.caio.restaurant.dto.request.RestaurantTableRequest;
@@ -22,6 +24,12 @@ public class RestaurantTableService {
                 return restaurantTableRepository.findAll().stream()
                                 .map(RestaurantTableResponse::toResponse)
                                 .toList();
+        }
+
+        @Transactional(readOnly = true)
+        public Page<RestaurantTableResponse> findAllPaged(Pageable pageable) {
+                return restaurantTableRepository.findAll(pageable)
+                                .map(RestaurantTableResponse::toResponse);
         }
 
         @Transactional(readOnly = true)
