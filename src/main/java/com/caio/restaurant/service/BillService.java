@@ -120,6 +120,7 @@ public class BillService {
                 item.setAddedBy(currentUser);
 
                 billItemRepository.save(item);
+                bill.getItems().add(item);
 
                 // Recalculate bill totals
                 recalculateTotals(bill);
