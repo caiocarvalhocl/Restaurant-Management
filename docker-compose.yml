@@ -39,25 +39,25 @@ services:
       postgres:
         condition: service_healthy
 
-  # Spring Boot API (uncomment when ready to containerize)
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: restaurant-api
-  #   restart: unless-stopped
-  #   environment:
-  #     SPRING_PROFILES_ACTIVE: docker
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/restaurant_db
-  #     SPRING_DATASOURCE_USERNAME: restaurant
-  #     SPRING_DATASOURCE_PASSWORD: restaurant123
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - restaurant-network
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: restaurant-api
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/restaurant_db
+      SPRING_DATASOURCE_USERNAME: restaurant
+      SPRING_DATASOURCE_PASSWORD: restaurant123
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in your environment or .env file}
+    ports:
+      - "8080:8080"
+    networks:
+      - restaurant-network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 networks:
   restaurant-network:

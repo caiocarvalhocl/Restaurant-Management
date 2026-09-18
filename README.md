@@ -258,8 +258,10 @@ src/main/java/com/caio/restaurant/
 | `SPRING_DATASOURCE_URL`      | Database URL          | `jdbc:postgresql://localhost:5432/restaurant_db` |
 | `SPRING_DATASOURCE_USERNAME` | Database user         | `restaurant`                                     |
 | `SPRING_DATASOURCE_PASSWORD` | Database password     | `restaurant123`                                  |
-| `JWT_SECRET`                 | JWT signing key       | (configured in application.yml)                  |
+| `JWT_SECRET`                 | JWT signing key       | **required** — no default, app fails to start without it |
 | `JWT_EXPIRATION`             | Token expiration (ms) | `86400000` (24h)                                 |
+
+Copy `.env.example` to `.env` and fill in `JWT_SECRET` (e.g. `openssl rand -base64 64`) before running locally or via `docker compose up`.
 
 ## 🐳 Docker Commands
 
