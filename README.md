@@ -1,3 +1,5 @@
+![CI](https://github.com/caiocarvalhocl/Restaurant-Management/actions/workflows/ci.yml/badge.svg)
+
 # 🍽️ Restaurant Management API
 
 A production-ready REST API for restaurant management built with **Java 17** and **Spring Boot 3**. Features complete table management, billing system, and JWT authentication with role-based authorization.
@@ -28,7 +30,7 @@ A production-ready REST API for restaurant management built with **Java 17** and
 | Layer                | Technology                  |
 | -------------------- | --------------------------- |
 | **Language**         | Java 17                     |
-| **Framework**        | Spring Boot 3.2             |
+| **Framework**        | Spring Boot 3.5.16          |
 | **Security**         | Spring Security + JWT       |
 | **Database**         | PostgreSQL 16               |
 | **ORM**              | Spring Data JPA / Hibernate |
@@ -49,7 +51,7 @@ A production-ready REST API for restaurant management built with **Java 17** and
 ### Categories
 
 | Method | Endpoint               | Description                       | Access        |
-| ------ | ---------------------- | ---------------------------------- | ------------- |
+| ------ | ---------------------- | --------------------------------- | ------------- |
 | GET    | `/api/categories`      | List all categories (unpaginated) | Authenticated |
 | GET    | `/api/categories/page` | List categories, paginated        | Authenticated |
 | GET    | `/api/categories/{id}` | Get category by ID                | Authenticated |
@@ -59,39 +61,39 @@ A production-ready REST API for restaurant management built with **Java 17** and
 
 ### Products
 
-| Method | Endpoint             | Description                      | Access        |
-| ------ | -------------------- | ---------------------------------- | ------------- |
-| GET    | `/api/products`      | List all products (unpaginated)  | Authenticated |
-| GET    | `/api/products/page` | List products, paginated         | Authenticated |
-| GET    | `/api/products/{id}` | Get product by ID                | Authenticated |
-| POST   | `/api/products`      | Create product                   | Owner         |
-| PUT    | `/api/products/{id}` | Update product                   | Owner         |
-| DELETE | `/api/products/{id}` | Delete product                   | Owner         |
+| Method | Endpoint             | Description                     | Access        |
+| ------ | -------------------- | ------------------------------- | ------------- |
+| GET    | `/api/products`      | List all products (unpaginated) | Authenticated |
+| GET    | `/api/products/page` | List products, paginated        | Authenticated |
+| GET    | `/api/products/{id}` | Get product by ID               | Authenticated |
+| POST   | `/api/products`      | Create product                  | Owner         |
+| PUT    | `/api/products/{id}` | Update product                  | Owner         |
+| DELETE | `/api/products/{id}` | Delete product                  | Owner         |
 
 ### Tables
 
-| Method | Endpoint           | Description                    | Access        |
-| ------ | ------------------ | -------------------------------- | ------------- |
-| GET    | `/api/tables`      | List all tables (unpaginated)    | Authenticated |
-| GET    | `/api/tables/page` | List tables, paginated           | Authenticated |
-| GET    | `/api/tables/{id}` | Get table by ID                  | Authenticated |
-| POST   | `/api/tables`      | Create table                     | Owner         |
-| PUT    | `/api/tables/{id}` | Update table                     | Owner         |
-| DELETE | `/api/tables/{id}` | Delete table                     | Owner         |
+| Method | Endpoint           | Description                   | Access        |
+| ------ | ------------------ | ----------------------------- | ------------- |
+| GET    | `/api/tables`      | List all tables (unpaginated) | Authenticated |
+| GET    | `/api/tables/page` | List tables, paginated        | Authenticated |
+| GET    | `/api/tables/{id}` | Get table by ID               | Authenticated |
+| POST   | `/api/tables`      | Create table                  | Owner         |
+| PUT    | `/api/tables/{id}` | Update table                  | Owner         |
+| DELETE | `/api/tables/{id}` | Delete table                  | Owner         |
 
 ### Bills
 
-| Method | Endpoint                         | Description                    | Access         |
-| ------ | -------------------------------- | -------------------------------- | -------------- |
-| GET    | `/api/bills`                     | List all bills (unpaginated)     | Owner, Cashier |
-| GET    | `/api/bills/page`                | List bills, paginated            | Owner, Cashier |
-| GET    | `/api/bills/open`                | List open bills                  | Authenticated  |
-| GET    | `/api/bills/{id}`                | Get bill by ID                   | Authenticated  |
-| POST   | `/api/bills`                     | Open new bill                    | Authenticated  |
-| POST   | `/api/bills/{id}/items`          | Add item to bill                 | Authenticated  |
-| DELETE | `/api/bills/{id}/items/{itemId}` | Remove item                      | Authenticated  |
-| POST   | `/api/bills/{id}/close`          | Close bill (payment)             | Owner, Cashier |
-| POST   | `/api/bills/{id}/cancel`         | Cancel bill                      | Owner, Cashier |
+| Method | Endpoint                         | Description                  | Access         |
+| ------ | -------------------------------- | ---------------------------- | -------------- |
+| GET    | `/api/bills`                     | List all bills (unpaginated) | Owner, Cashier |
+| GET    | `/api/bills/page`                | List bills, paginated        | Owner, Cashier |
+| GET    | `/api/bills/open`                | List open bills              | Authenticated  |
+| GET    | `/api/bills/{id}`                | Get bill by ID               | Authenticated  |
+| POST   | `/api/bills`                     | Open new bill                | Authenticated  |
+| POST   | `/api/bills/{id}/items`          | Add item to bill             | Authenticated  |
+| DELETE | `/api/bills/{id}/items/{itemId}` | Remove item                  | Authenticated  |
+| POST   | `/api/bills/{id}/close`          | Close bill (payment)         | Owner, Cashier |
+| POST   | `/api/bills/{id}/cancel`         | Cancel bill                  | Owner, Cashier |
 
 ### Pagination
 
@@ -117,8 +119,8 @@ Validation failures, not-found errors, and authentication/authorization failures
 }
 ```
 
-| Status | Error        | When                                                                 |
-| ------ | ------------ | --------------------------------------------------------------------- |
+| Status | Error        | When                                                                |
+| ------ | ------------ | ------------------------------------------------------------------- |
 | 400    | Bad Request  | Request body fails validation (`message` is a map of field → error) |
 | 401    | Unauthorized | Missing/invalid JWT on a protected endpoint                         |
 | 403    | Forbidden    | Authenticated but lacking the required role                         |
@@ -196,7 +198,10 @@ git clone https://github.com/yourusername/restaurant-api.git
 cd restaurant-api
 
 # Start PostgreSQL
-docker compose up -d
+docker compose up -d postgres
+
+# JWT_SECRET is required (.env is only read by Docker Compose)
+export JWT_SECRET=$(openssl rand -base64 64)
 
 # Run the application
 ./mvnw spring-boot:run
@@ -226,11 +231,10 @@ A request with a missing or expired token returns `401 Unauthorized`; a valid to
 
 ### Services
 
-| Service    | URL                   | Credentials                                                    |
-| ---------- | --------------------- | ---------------------------------------------------------------- |
+| Service    | URL                   | Credentials                                                     |
+| ---------- | --------------------- | --------------------------------------------------------------- |
 | API        | http://localhost:8080 | Seeded admin: `admin@restaurant.com` / `admin123` (role: OWNER) |
 | PostgreSQL | localhost:5432        | `restaurant` / `restaurant123`                                  |
-| pgAdmin    | http://localhost:5050 | `admin@restaurant.com` / `admin123` (unrelated to the API login, coincidentally the same values) |
 
 ## 📁 Project Structure
 
@@ -253,15 +257,16 @@ src/main/java/com/caio/restaurant/
 
 ### Environment Variables
 
-| Variable                     | Description           | Default                                          |
-| ---------------------------- | --------------------- | ------------------------------------------------ |
-| `SPRING_DATASOURCE_URL`      | Database URL          | `jdbc:postgresql://localhost:5432/restaurant_db` |
-| `SPRING_DATASOURCE_USERNAME` | Database user         | `restaurant`                                     |
-| `SPRING_DATASOURCE_PASSWORD` | Database password     | `restaurant123`                                  |
-| `JWT_SECRET`                 | JWT signing key       | **required** — no default, app fails to start without it |
-| `JWT_EXPIRATION`             | Token expiration (ms) | `86400000` (24h)                                 |
+| Variable            | Description           | Default                                                  |
+| ------------------- | --------------------- | -------------------------------------------------------- |
+| `POSTGRES_DB`       | Database name         | `restaurant_db`                                          |
+| `POSTGRES_USER`     | Database user         | `restaurant`                                             |
+| `POSTGRES_PASSWORD` | Database password     | `restaurant123`                                          |
+| `POSTGRES_PORT`     | Database port         | `5432`                                                   |
+| `JWT_SECRET`        | JWT signing key       | **required** — no default, app fails to start without it |
+| `JWT_EXPIRATION`    | Token expiration (ms) | `86400000` (24h)                                         |
 
-Copy `.env.example` to `.env` and fill in `JWT_SECRET` (e.g. `openssl rand -base64 64`) before running locally or via `docker compose up`.
+Copy `.env.example` to `.env` and fill in `JWT_SECRET` (e.g. `openssl rand -base64 64`) before running via `docker compose up`. `.env` is only read by Docker Compose: to run with `spring-boot:run`, export `JWT_SECRET` in your shell. The `POSTGRES_*` variables are optional there, since they have the defaults above.
 
 ## 🐳 Docker Commands
 
