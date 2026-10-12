@@ -5,9 +5,9 @@ services:
     container_name: restaurant-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: restaurant_db
-      POSTGRES_USER: restaurant
-      POSTGRES_PASSWORD: restaurant123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -15,29 +15,10 @@ services:
     networks:
       - restaurant-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U restaurant -d restaurant_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # pgAdmin - Database GUI
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: restaurant-pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@restaurant.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - restaurant-network
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   api:
     build:
@@ -47,10 +28,10 @@ services:
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/restaurant_db
-      SPRING_DATASOURCE_USERNAME: restaurant
-      SPRING_DATASOURCE_PASSWORD: restaurant123
-      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in your environment or .env file}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?"JWT_SECRET environment variable is not set"}
     ports:
       - "8080:8080"
     networks:
@@ -65,4 +46,3 @@ networks:
 
 volumes:
   postgres_data:
-  pgadmin_data:
