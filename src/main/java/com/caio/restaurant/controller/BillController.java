@@ -70,6 +70,7 @@ public class BillController {
     // Add item to bill
     @PostMapping("/{id}/items")
     @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(HttpStatus.CREATED)
     public BillResponse addItem(
             @PathVariable Long id,
             @Valid @RequestBody AddBillItemRequest request,

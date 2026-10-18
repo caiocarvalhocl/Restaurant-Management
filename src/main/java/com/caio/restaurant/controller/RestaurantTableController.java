@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 
 import com.caio.restaurant.dto.request.RestaurantTableRequest;
 import com.caio.restaurant.dto.response.RestaurantTableResponse;
@@ -53,18 +55,21 @@ public class RestaurantTableController {
 
     @PostMapping
     @PreAuthorize("hasRole('OWNER')")
+    @ResponseStatus(HttpStatus.CREATED)
     public RestaurantTableResponse createTable(@Valid @RequestBody RestaurantTableRequest request) {
         return restaurantTableService.create(request);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('OWNER')")
-    public RestaurantTableResponse updateTable(@PathVariable Long id, @Valid @RequestBody RestaurantTableRequest request) {
+    public RestaurantTableResponse updateTable(@PathVariable Long id,
+            @Valid @RequestBody RestaurantTableRequest request) {
         return restaurantTableService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('OWNER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTable(@PathVariable Long id) {
         restaurantTableService.delete(id);
     }
