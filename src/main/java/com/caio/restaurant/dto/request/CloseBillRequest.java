@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record CloseBillRequest(
-                @NotNull(message = "Payment method is required") PaymentMethod paymentMethod,
-
-                BigDecimal discount // optional
-) {
-}
+    @NotNull(message = "Payment method is required") PaymentMethod paymentMethod,
+    BigDecimal discount // optional
+    ) {}

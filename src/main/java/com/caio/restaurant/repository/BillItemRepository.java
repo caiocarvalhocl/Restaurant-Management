@@ -1,7 +1,6 @@
 package com.caio.restaurant.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.caio.restaurant.entity.BillItem;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BillItemRepository extends JpaRepository<BillItem, Long> {
-}
+public interface BillItemRepository extends JpaRepository<BillItem, Long> {}
