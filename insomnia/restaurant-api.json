@@ -1,0 +1,591 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-13T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app",
+  "resources": [
+    {
+      "_id": "wrk_restaurant_api",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Restaurant API",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_restaurant_api",
+      "name": "Base Environment",
+      "data": {
+        "baseUrl": "http://localhost:8080",
+        "itemId": 1,
+        "categoryId": 1,
+        "productId": 1,
+        "tableId": 1
+      }
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_restaurant_api",
+      "name": "Auth",
+      "metaSortKey": -1791865838262
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "login",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/auth/login",
+      "metaSortKey": -1791865838262,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@restaurant.com\",\n  \"password\": \"admin123\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "register",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/auth/register",
+      "metaSortKey": -1791865838261,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Cashier\",\n  \"email\": \"cashier@restaurant.com\",\n  \"password\": \"cashier123\",\n  \"role\": \"CASHIER\"\n}"
+      }
+    },
+    {
+      "_id": "fld_categories",
+      "_type": "request_group",
+      "parentId": "wrk_restaurant_api",
+      "name": "Categories",
+      "metaSortKey": -1791865838261
+    },
+    {
+      "_id": "req_categories_list",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "list",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/categories",
+      "metaSortKey": -1791865838262,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_categories_list_paged",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "list paged",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/categories/page",
+      "metaSortKey": -1791865838261,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_categories_get_by_id",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "get by id",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/categories/{{ _.categoryId }}",
+      "metaSortKey": -1791865838260,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_categories_create",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "create",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/categories",
+      "metaSortKey": -1791865838259,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Drinks\",\n  \"description\": \"Cold and hot drinks\"\n}"
+      }
+    },
+    {
+      "_id": "req_categories_update",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "update",
+      "method": "PUT",
+      "url": "{{ _.baseUrl }}/api/categories/{{ _.categoryId }}",
+      "metaSortKey": -1791865838258,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Drinks\",\n  \"description\": \"Updated\"\n}"
+      }
+    },
+    {
+      "_id": "req_categories_delete",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "delete",
+      "method": "DELETE",
+      "url": "{{ _.baseUrl }}/api/categories/{{ _.categoryId }}",
+      "metaSortKey": -1791865838257,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "fld_products",
+      "_type": "request_group",
+      "parentId": "wrk_restaurant_api",
+      "name": "Products",
+      "metaSortKey": -1791865838260
+    },
+    {
+      "_id": "req_products_list",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "list",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/products",
+      "metaSortKey": -1791865838262,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_products_list_paged",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "list paged",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/products/page",
+      "metaSortKey": -1791865838261,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_products_get_by_id",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "get by id",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/products/{{ _.productId }}",
+      "metaSortKey": -1791865838260,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_products_create",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "create",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/products",
+      "metaSortKey": -1791865838259,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Pizza\",\n  \"description\": \"Margherita\",\n  \"price\": 10.0,\n  \"priceType\": \"FIXED\",\n  \"available\": true,\n  \"categoryId\": 1\n}"
+      }
+    },
+    {
+      "_id": "req_products_update",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "update",
+      "method": "PUT",
+      "url": "{{ _.baseUrl }}/api/products/{{ _.productId }}",
+      "metaSortKey": -1791865838258,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Pizza\",\n  \"description\": \"Margherita\",\n  \"price\": 12.0,\n  \"priceType\": \"FIXED\",\n  \"available\": true,\n  \"categoryId\": 1\n}"
+      }
+    },
+    {
+      "_id": "req_products_delete",
+      "_type": "request",
+      "parentId": "fld_products",
+      "name": "delete",
+      "method": "DELETE",
+      "url": "{{ _.baseUrl }}/api/products/{{ _.productId }}",
+      "metaSortKey": -1791865838257,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "fld_tables",
+      "_type": "request_group",
+      "parentId": "wrk_restaurant_api",
+      "name": "Tables",
+      "metaSortKey": -1791865838259
+    },
+    {
+      "_id": "req_tables_list",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "list",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/tables",
+      "metaSortKey": -1791865838262,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_tables_list_paged",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "list paged",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/tables/page",
+      "metaSortKey": -1791865838261,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_tables_get_by_id",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "get by id",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/tables/{{ _.tableId }}",
+      "metaSortKey": -1791865838260,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_tables_create",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "create",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/tables",
+      "metaSortKey": -1791865838259,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tableNumber\": 100,\n  \"capacity\": 4,\n  \"status\": \"AVAILABLE\"\n}"
+      }
+    },
+    {
+      "_id": "req_tables_update",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "update",
+      "method": "PUT",
+      "url": "{{ _.baseUrl }}/api/tables/{{ _.tableId }}",
+      "metaSortKey": -1791865838258,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tableNumber\": 100,\n  \"capacity\": 6,\n  \"status\": \"AVAILABLE\"\n}"
+      }
+    },
+    {
+      "_id": "req_tables_delete",
+      "_type": "request",
+      "parentId": "fld_tables",
+      "name": "delete",
+      "method": "DELETE",
+      "url": "{{ _.baseUrl }}/api/tables/{{ _.tableId }}",
+      "metaSortKey": -1791865838257,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "fld_bills",
+      "_type": "request_group",
+      "parentId": "wrk_restaurant_api",
+      "name": "Bills",
+      "metaSortKey": -1791865838258
+    },
+    {
+      "_id": "req_bills_list",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "list",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/bills",
+      "metaSortKey": -1791865838262,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_bills_list_paged",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "list paged",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/bills/page",
+      "metaSortKey": -1791865838261,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_bills_list_open",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "list open",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/bills/open",
+      "metaSortKey": -1791865838260,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_bills_get_by_id",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "get by id",
+      "method": "GET",
+      "url": "{{ _.baseUrl }}/api/bills/{% response 'body', 'req_bills_open', 'b64::JC5pZA==::46b', 'never', 60 %}",
+      "metaSortKey": -1791865838259,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_bills_open",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "open",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/bills",
+      "metaSortKey": -1791865838258,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"tableId\": 1,\n  \"clientName\": \"Test Client\"\n}"
+      }
+    },
+    {
+      "_id": "req_bills_add_item",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "add item",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/bills/{% response 'body', 'req_bills_open', 'b64::JC5pZA==::46b', 'never', 60 %}/items",
+      "metaSortKey": -1791865838257,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"productId\": 1,\n  \"quantity\": 2,\n  \"notes\": \"no onions\"\n}"
+      }
+    },
+    {
+      "_id": "req_bills_remove_item",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "remove item",
+      "method": "DELETE",
+      "url": "{{ _.baseUrl }}/api/bills/{% response 'body', 'req_bills_open', 'b64::JC5pZA==::46b', 'never', 60 %}/items/{{ _.itemId }}",
+      "metaSortKey": -1791865838256,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    },
+    {
+      "_id": "req_bills_close",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "close",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/bills/{% response 'body', 'req_bills_open', 'b64::JC5pZA==::46b', 'never', 60 %}/close",
+      "metaSortKey": -1791865838255,
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      },
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"paymentMethod\": \"PIX\"\n}"
+      }
+    },
+    {
+      "_id": "req_bills_cancel",
+      "_type": "request",
+      "parentId": "fld_bills",
+      "name": "cancel",
+      "method": "POST",
+      "url": "{{ _.baseUrl }}/api/bills/{% response 'body', 'req_bills_open', 'b64::JC5pZA==::46b', 'never', 60 %}/cancel",
+      "metaSortKey": -1791865838254,
+      "headers": [],
+      "parameters": [],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body', 'req_auth_login', 'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+      }
+    }
+  ]
+}

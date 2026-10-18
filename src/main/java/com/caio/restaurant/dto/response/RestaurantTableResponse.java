@@ -1,13 +1,12 @@
 package com.caio.restaurant.dto.response;
 
-import java.time.LocalDateTime;
-
 import com.caio.restaurant.dto.request.RestaurantTableRequest;
 import com.caio.restaurant.entity.RestaurantTable;
 import com.caio.restaurant.enums.TableStatus;
+import java.time.LocalDateTime;
 
-public record RestaurantTableResponse(Long id, Integer tableNumber, Integer capacity, TableStatus status,
-    LocalDateTime createdAt) {
+public record RestaurantTableResponse(
+    Long id, Integer tableNumber, Integer capacity, TableStatus status, LocalDateTime createdAt) {
 
   public static RestaurantTableResponse toResponse(RestaurantTable table) {
     return new RestaurantTableResponse(
